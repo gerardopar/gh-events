@@ -46,19 +46,18 @@ jobs:
         with:
           name: dist-files
           path: dist
+#          path: |
+#            dist
+#            package.json
   deploy:
-    needs: [lint, test]
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
         with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
+          name: dist-files
+      - name: output contents
+        run: ls
       - name: Deploy
-        run: echo "Deployment complete..."
+        run: echo "Deploying..."
